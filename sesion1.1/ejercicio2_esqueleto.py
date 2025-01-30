@@ -52,7 +52,7 @@ def simulate_replicated_log():
         node.print_logs()
 
     # Simular fallo del líder y elección de un nuevo líder
-   if leader:
+    if leader:
         print(f"\nNode {leader.node_id} (leader) FAILS! A new election is triggered...\n")
         leader.state = "follower"
         time.sleep(1)
