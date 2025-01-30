@@ -12,18 +12,16 @@ class MiniWAL:
         self.load_database()
 
     def load_database(self):
-        """Carga el estado de la base de datos desde un archivo"""
-        if os.path.exists(DB_FILE):
-            with open(DB_FILE, "r") as f:
-                self.database = json.load(f)
-        else:
-            self.database = {"balance": 0}  # Estado inicial
+        """Carga el estado de la base de datos desde el archivo"""
+        #To do#
+       
 
     def log_transaction(self, operation, amount):
         """Guarda la transacción en el WAL antes de aplicarla"""
         transaction = {"operation": operation, "amount": amount}
         self.transactions.append(transaction)
-        self.write_log()
+         #To do#
+        
 
     def write_log(self):
         """Escribe las transacciones en el WAL"""
@@ -31,20 +29,15 @@ class MiniWAL:
             json.dump(self.transactions, f)
 
     def apply_transactions(self):
-        """Aplica las transacciones registradas en el WAL a la base de datos"""
-        for tx in self.transactions:
-            if tx["operation"] == "deposit":
-                self.database["balance"] += tx["amount"]
-            elif tx["operation"] == "withdraw" and self.database["balance"] >= tx["amount"]:
-                self.database["balance"] -= tx["amount"]
+        """Aplica las transacciones registradas en el WAL a la base de datos. Las transacciones son deposit y withdraw sobre el total que es balance"""
+         #To do#
 
         self.save_database()
-        #self.clear_log()  # Limpia el log después de aplicar las transacciones
+        
 
     def save_database(self):
         """Guarda el estado actualizado de la base de datos"""
-        with open(DB_FILE, "w") as f:
-            json.dump(self.database, f)
+         #To do#
 
     def clear_log(self):
         """Elimina el WAL después de aplicar todas las transacciones"""
