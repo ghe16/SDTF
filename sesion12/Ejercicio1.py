@@ -20,15 +20,15 @@ def draw_cluster(leader, cluster):
     colors = []
     for node in NODES:
         if node == leader:
-            colors.append("blue")  # Nodo líder en azul
+            colors.append("blue")  
         elif cluster[node]["status"] == "inactive":
-            colors.append("red")  # Nodos inactivos en rojo
+            colors.append("red")  
         elif cluster[node]["status"] == "responded":
-            colors.append("cyan")  # Nodos que respondieron con datos actualizados
+            colors.append("cyan")  
         elif cluster[node]["status"] == "stale":
-            colors.append("orange")  # Nodos que respondieron con datos desactualizados
+            colors.append("orange") 
         else:
-            colors.append("green")  # Nodos activos en verde
+            colors.append("green")  
 
     pos = nx.circular_layout(G)
     plt.clf()
@@ -46,7 +46,7 @@ def replicate_message(leader, cluster):
     
     for node in NODES:
         if node != leader:
-            is_stale = random.random() > 0.8  # 20% de probabilidad de datos desactualizados
+            is_stale = random.random() > 0.8  
             cluster[node]["data"] = message if not is_stale else "stale_data"
             print(f"[Nodo {node}] Datos actualizados a: {cluster[node]['data']}")
             
@@ -68,7 +68,7 @@ plt.figure(figsize=(8, 8))
 
 for _ in range(5):
     CLUSTER = {node: {"data": "initial_value", "status": "active"} for node in NODES}
-    LEADER = random.choice(NODES)  # Elegir un líder diferente en cada iteración
+    LEADER = random.choice(NODES)  
     draw_cluster(LEADER, CLUSTER)
     time.sleep(7)
     replicate_message(LEADER, CLUSTER)

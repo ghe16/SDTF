@@ -20,15 +20,15 @@ def draw_cluster(leader, cluster):
     colors = []
     for node in NODES:
         if node == leader:
-            colors.append("blue")  # Nodo líder en azul
+            colors.append("blue")  
         elif cluster[node]["status"] == "inactive":
-            colors.append("red")  # Nodos inactivos en rojo
+            colors.append("red")  
         elif cluster[node]["status"] == "rejected":
-            colors.append("pink")  # Nodos que rechazaron la actualización en rosa
+            colors.append("pink") 
         elif cluster[node]["status"] == "accepted":
-            colors.append("cyan")  # Nodos que aceptaron una petición externa en celeste
+            colors.append("cyan")  
         else:
-            colors.append("green")  # Nodos activos en verde
+            colors.append("green")  
 
     pos = nx.circular_layout(G)
     plt.clf()

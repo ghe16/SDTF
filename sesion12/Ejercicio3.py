@@ -50,21 +50,19 @@ def draw_cluster(leader_map, partitions, cluster, graph):
         elif any(node in p for p in partitions):
             leader = leader_map.get(node, None)
             if node == leader:
-                colors.append("blue")  # Nodo líder en azul
-            elif cluster[node]["status"] == "replicated":
-                colors.append("orange")  # Nodo que replicó en naranja
+                colors.append("blue")  # 
             elif cluster[node]["status"] == "updated":
-                colors.append("green")  # Nodo actualizado a verde
+                colors.append("green")  # 
             elif cluster[node]["status"] == "cyan":
-                colors.append("cyan")  # Nodo actualizado por petición externa
+                colors.append("cyan")  # 
             elif cluster[node]["status"] == "stale_data":
-                colors.append("orange")  # Nodo con datos desactualizados en naranja
+                colors.append("orange")  #
             elif cluster[node]["status"] == "stale_request":
-                colors.append("purple")  # Nodo que recibió una petición externa con datos desactualizados en morado
+                colors.append("purple")  # 
             else:
-                colors.append("green")  # Nodo activo en verde
+                colors.append("green")  #
         else:
-            colors.append("red")  # Nodo aislado
+            colors.append("red")  # 
     
     for edge in graph.edges():
         if edge[0] in partition_map and edge[1] in partition_map and partition_map[edge[0]] == partition_map[edge[1]]:
@@ -85,14 +83,14 @@ def replicate_message(leader_map, cluster, partitions, graph):
         leader = leader_map.get(min(partition), None)
         if leader is None:
             leader = min(partition)
-            leader_map[leader] = leader  # Asignar un nuevo líder si no está presente
+            leader_map[leader] = leader  
         
         message = f"Updated_by_leader_{leader}"
         print(f"[Líder {leader}] Replicando mensaje en su partición: {message}")
         
         for node in partition:
             if node != leader:
-                is_stale = random.random() > 0.1  # 20% de probabilidad de datos desactualizados
+                is_stale = random.random() > 0.7  
                 cluster[node]["data"] = message if not is_stale else "stale_data"
                 cluster[node]["status"] = "updated" if not is_stale else "stale_data"
                 print(f"[Nodo {node}] Datos actualizados a: {cluster[node]['data']}")
@@ -112,7 +110,6 @@ def replicate_message(leader_map, cluster, partitions, graph):
         draw_cluster(leader_map, partitions, cluster, graph)
         time.sleep(1)
 
-# Visualización interactiva
 plt.ion()
 plt.figure(figsize=(8, 8))
 
@@ -133,11 +130,11 @@ partitions = simulate_partition()
 new_G = build_partitioned_graph(partitions)
 leader_map = {min(partition): min(partition) for partition in partitions if partition}  # Asegurar que cada partición tenga líder
 draw_cluster(leader_map, partitions, CLUSTER, new_G)
-time.sleep(2)
+time.sleep(7)
 
 # Replicar mensaje después de la partición
 replicate_message(leader_map, CLUSTER, partitions, new_G)
-time.sleep(2)
+time.sleep(7)
 
 plt.ioff()
 plt.show()
