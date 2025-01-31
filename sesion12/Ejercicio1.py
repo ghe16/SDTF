@@ -4,7 +4,7 @@ import random
 import time
 
 # Definir el número de nodos del clúster
-NUM_NODES = 7  # Se puede cambiar este valor
+NUM_NODES = 10  # Se puede cambiar este valor
 NODES = list(range(1, NUM_NODES + 1))
 
 # Crear la red gráfica
@@ -15,21 +15,11 @@ for i in NODES:
         if i != j:
             G.add_edge(i, j)
 
-# Simulación de partición de red
-PARTITIONED_NODES = set()
-def simulate_partition():
-    global PARTITIONED_NODES
-    num_partitioned = random.randint(0, NUM_NODES // 2)  # Hasta la mitad de los nodos pueden quedar aislados
-    PARTITIONED_NODES = set(random.sample(NODES, num_partitioned))
-    print(f"** Partición de red: nodos aislados {PARTITIONED_NODES} **")
-
 # Función para mostrar el clúster
 def draw_cluster(leader, cluster):
     colors = []
     for node in NODES:
-        if node in PARTITIONED_NODES:
-            colors.append("red")  # Nodos en partición de red en rojo
-        elif node == leader:
+        if node == leader:
             colors.append("blue")  # Nodo líder en azul
         elif cluster[node]["status"] == "inactive":
             colors.append("red")  # Nodos inactivos en rojo
@@ -45,7 +35,7 @@ def draw_cluster(leader, cluster):
     nx.draw(
         G, pos, with_labels=True, node_color=colors, node_size=700, font_weight="bold"
     )
-    plt.title("Simulación de Disponibilidad en el Clúster con Particiones de Red")
+    plt.title("Simulación de Disponibilidad en el Clúster")
     plt.pause(1)
 
 # Simulación de replicación del mensaje
@@ -55,23 +45,20 @@ def replicate_message(leader, cluster):
     draw_cluster(leader, cluster)
     
     for node in NODES:
-        if node != leader and node not in PARTITIONED_NODES:
+        if node != leader:
             is_stale = random.random() > 0.8  # 20% de probabilidad de datos desactualizados
             cluster[node]["data"] = message if not is_stale else "stale_data"
             print(f"[Nodo {node}] Datos actualizados a: {cluster[node]['data']}")
             
             # Simulación de petición externa mientras se actualiza
             target_node = random.choice(NODES)
-            if target_node in PARTITIONED_NODES:
-                print(f"[Petición Externa] Enviada al Nodo {target_node} - No responde (en partición de red)")
+            print(f"[Petición Externa] Enviada al Nodo {target_node}")
+            if cluster[target_node]["data"] == "stale_data":
+                print(f"[Nodo {target_node}] Responde con datos desactualizados")
+                cluster[target_node]["status"] = "stale"
             else:
-                print(f"[Petición Externa] Enviada al Nodo {target_node}")
-                if cluster[target_node]["data"] == "stale_data":
-                    print(f"[Nodo {target_node}] Responde con datos desactualizados")
-                    cluster[target_node]["status"] = "stale"
-                else:
-                    print(f"[Nodo {target_node}] Responde con datos actualizados")
-                    cluster[target_node]["status"] = "responded"
+                print(f"[Nodo {target_node}] Responde con datos actualizados")
+                cluster[target_node]["status"] = "responded"
     
     draw_cluster(leader, cluster)
 
@@ -82,11 +69,10 @@ plt.figure(figsize=(8, 8))
 for _ in range(5):
     CLUSTER = {node: {"data": "initial_value", "status": "active"} for node in NODES}
     LEADER = random.choice(NODES)  # Elegir un líder diferente en cada iteración
-    simulate_partition()  # Simular partición de red
     draw_cluster(LEADER, CLUSTER)
-    time.sleep(2)
+    time.sleep(7)
     replicate_message(LEADER, CLUSTER)
-    time.sleep(2)
+    time.sleep(7)
 
 plt.ioff()
 plt.show()
