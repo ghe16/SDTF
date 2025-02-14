@@ -1,0 +1,63 @@
+{
+
+    "config": {
+
+            "chainId": 32382,
+
+            "homesteadBlock": 0,
+
+            "daoForkSupport": true,
+
+            "eip150Block": 0,
+
+            "eip155Block": 0,
+
+            "eip158Block": 0,
+
+            "byzantiumBlock": 0,
+
+            "constantinopleBlock": 0,
+
+            "petersburgBlock": 0,
+
+            "istanbulBlock": 0,
+
+            "muirGlacierBlock": 0,
+
+            "berlinBlock": 0,
+
+            "londonBlock": 0,
+
+            "arrowGlacierBlock": 0,
+
+            "grayGlacierBlock": 0,
+
+            "shanghaiTime": 1694203366,
+
+            "cancunTime": 1700000000,
+
+            "osakaTime": 1710000000,
+
+           // "blobBaseFee": 1000000000,
+
+            //"excessBlobGas": 0,
+
+            //"eip4844DenebTime": 1700000000,
+
+            "terminalTotalDifficulty": 0,
+
+            "terminalTotalDifficultyPassed": true,
+
+            //"dataGas": {
+
+             // "cancunTime": 1700000000,
+
+              //"blobBaseFee": 1000000000,
+
+              //"excessBlobGas": 0
+
+            //}
+
+    },
+
+    "nonce": "0x0",
